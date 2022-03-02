@@ -1,4 +1,4 @@
-//UTILITY
+//UTILITIES
 // RANGE set the componentwise range of each channel
 setFunction({
   name: 'range',
@@ -52,7 +52,59 @@ vec4 max = vec4(RMax, GMax, BMax, AMax);
 return _c0 * (max - min) + min;
 `
 })
-//COMPOSITING
+//CHANNEL SELECTION
+//ISOLATE RED CHANNEL
+setFunction({
+  name: 'xr', // name that will be used to access function in js as well as in glsl
+  type: 'color', // can be 'src', 'color', 'combine', 'combineCoords'. see below for more info
+  inputs: [
+    {
+      name: `amount`,
+      type: `float`,
+      default: 1.0
+    }
+  ],
+  // The above code generates the glsl function
+  glsl:
+  `vec4 r = vec4(amount,0,0,1);
+  return  _c0 * r;
+  `
+},)
+//ISOLATE GREEN CHANNEL
+setFunction({
+  name: 'xg', // name that will be used to access function in js as well as in glsl
+  type: 'color', // can be 'src', 'color', 'combine', 'combineCoords'. see below for more info
+  inputs: [
+    {
+      name: `amount`,
+      type: `float`,
+      default: 1.0
+    }
+  ],
+  // The above code generates the glsl function
+  glsl:
+  `vec4 g = vec4(0,amount,0,1);
+  return  _c0 * g;
+  `
+},)
+//ISOLATE BLUE CHANNEL
+setFunction({
+  name: 'xb', // name that will be used to access function in js as well as in glsl
+  type: 'color', // can be 'src', 'color', 'combine', 'combineCoords'. see below for more info
+  inputs: [
+    {
+      name: `amount`,
+      type: `float`,
+      default: 1.0
+    }
+  ],
+  // The above code generates the glsl function
+  glsl:
+  `vec4 b = vec4(0,0,amount,1);
+  return  _c0 * b;
+  `
+},)
+//COMPOSITING////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //AVERAGE
 setFunction({
   name: 'average', // name that will be used to access function in js as well as in glsl
@@ -81,55 +133,6 @@ setFunction({
   return  vec4((_c0.rgb+_c1.rgb)*0.5,_c0.a);
   `
 },)
-//CHANNEL SELECTING
-//MULTIPLY RED CHANNEL
-setFunction({
-  name: 'xr', // name that will be used to access function in js as well as in glsl
-  type: 'color', // can be 'src', 'color', 'combine', 'combineCoords'. see below for more info
-  inputs: [
-    {
-      name: `amount`,
-      type: `float`,
-      default: 1.0
-    }
-  ],
-  // The above code generates the glsl function
-  glsl:
-  `vec4 r = vec4(amount,0,0,1);
-  return  _c0 * r;
-  `
-},)
-//MULTIPLY GREEN CHANNEL
-setFunction({
-  name: 'xg', // name that will be used to access function in js as well as in glsl
-  type: 'color', // can be 'src', 'color', 'combine', 'combineCoords'. see below for more info
-  inputs: [
-    {
-      name: `amount`,
-      type: `float`,
-      default: 1.0
-    }
-  ],
-  // The above code generates the glsl function
-  glsl:
-  `vec4 g = vec4(0,amount,0,1);
-  return  _c0 * g;
-  `
-},)
-//MULTIPLY BLUE CHANNEL
-setFunction({
-  name: 'xb', // name that will be used to access function in js as well as in glsl
-  type: 'color', // can be 'src', 'color', 'combine', 'combineCoords'. see below for more info
-  inputs: [
-    {
-      name: `amount`,
-      type: `float`,
-      default: 1.0
-    }
-  ],
-  // The above code generates the glsl function
-  glsl:
-  `vec4 b = vec4(0,0,amount,1);
-  return  _c0 * b;
-  `
-},)
+//TEXTURE CREATION /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+noiserg = ()=> noise().color(1,0,0).add(noise(10,0.11).color(0,1))
+noisecomplex = ()=> noise().color(1,0,0).add(noise(10,0.11).color(0,1,0)).blend(noise(2).color(1,0.5,0).add(noise(2.1,0.1011).color(0.5,1,0)),0.3).blend(noise(100,0.99).color(1,0.5,0).add(noise(100,0.101).color(0.5,1)),0.1);
