@@ -134,5 +134,5 @@ setFunction({
   `
 },)
 //TEXTURE CREATION /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-noiserg = ()=> noise().color(1,0,0).add(noise(10,0.11).color(0,1))
+noiserg = (scale=10)=> noise(scale).color(1,0,0).add(noise(scale,0.11).color(0,1))
 noisecomplex = ()=> noise().color(1,0,0).add(noise(10,0.11).color(0,1,0)).blend(noise(2).color(1,0.5,0).add(noise(2.1,0.1011).color(0.5,1,0)),0.3).blend(noise(100,0.99).color(1,0.5,0).add(noise(100,0.101).color(0.5,1)),0.1);
